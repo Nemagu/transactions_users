@@ -9,29 +9,11 @@ nats:
   ping_interval: 120
   max_outstanding_pings: 3
 
-consumers:
-  company:
-    stream_name: companies_service
-    main_subject_name: company
-    creation_subject_name: created
-    deletion_subject_name: deleted
-    restoration_subject_name: restored
-  employee:
-    stream_name: companies_service
-    main_subject_name: employee
-    creation_subject_name: created
-    deletion_subject_name: dismissed
-    restoration_subject_name: reinstated
-  project:
-    stream_name: time_tracker
-    main_subject_name: project
-    creation_subject_name: created
-
 db:
   host: localhost
   port: 5432
-  user: companies_service
-  database: companies_service
+  user: transactions_users
+  database: transactions_users
   password_file: /tmp/transactions/db_password
   pool:
     min_size: 10

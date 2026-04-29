@@ -19,9 +19,9 @@ class PostgresSettings(BaseModel):
     """Компонент `PostgresSettings`."""
     host: str = "localhost"
     port: int = 5432
-    user: str = "companies_service"
+    user: str = "transactions_users"
     password_file: str = "/tmp/transactions/db_password"
-    database: str = "companies_service"
+    database: str = "transactions_users"
 
     pool: PostgresPoolSettings = Field(default_factory=PostgresPoolSettings)
 

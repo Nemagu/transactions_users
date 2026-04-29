@@ -13,38 +13,22 @@ from pydantic_settings import (
 from infrastructure.config.db import PostgresPoolSettings, PostgresSettings
 from infrastructure.config.fastapi import FastAPISettings, UvicornSettings
 from infrastructure.config.nats import (
-    CompanyNatsConsumerStreamSettings,
-    EmployeeNatsConsumerStreamSettings,
-    NatsConsumerStreamSettings,
     NatsPublisherStreamSettings,
     NatsSettings,
-    ProjectDisciplinePublisherStreamSettings,
-    ProjectNatsConsumerStreamSettings,
-    ProjectNatsPublisherStreamSettings,
-    ProjectPartPublisherStreamSettings,
-    ProjectSectionPublisherStreamSettings,
-    ProjectStagePublisherStreamSettings,
+    UserNatsPublisherStreamSettings,
 )
 from infrastructure.config.redis import RedisSettings
 
 __all__ = [
     "APIWorkerSettings",
-    "CompanyNatsConsumerStreamSettings",
-    "EmployeeNatsConsumerStreamSettings",
     "FastAPISettings",
     "MessageBrokerPublisherSettings",
-    "NatsConsumerStreamSettings",
     "NatsPublisherStreamSettings",
     "NatsSettings",
     "PostgresPoolSettings",
     "PostgresSettings",
-    "ProjectDisciplinePublisherStreamSettings",
-    "ProjectNatsConsumerStreamSettings",
-    "ProjectNatsPublisherStreamSettings",
-    "ProjectPartPublisherStreamSettings",
-    "ProjectSectionPublisherStreamSettings",
-    "ProjectStagePublisherStreamSettings",
     "RedisSettings",
+    "UserNatsPublisherStreamSettings",
     "UvicornSettings",
 ]
 
@@ -85,15 +69,6 @@ class APIWorkerSettings(AppBaseSettings):
     db: PostgresSettings = Field(default_factory=PostgresSettings)
     redis: RedisSettings = Field(default_factory=RedisSettings)
 
-
-class MessageBrokerConsumerSettings(AppBaseSettings):
-    """Компонент `MessageBrokerConsumerSettings`."""
-
-    nats: NatsSettings = Field(default_factory=NatsSettings)
-    consumers: NatsConsumerStreamSettings = Field(
-        default_factory=NatsConsumerStreamSettings
-    )
-    db: PostgresSettings = Field(default_factory=PostgresSettings)
 
 
 class MessageBrokerPublisherSettings(AppBaseSettings):

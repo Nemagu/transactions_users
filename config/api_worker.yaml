@@ -14,8 +14,8 @@ uvicorn:
 db:
   host: localhost
   port: 5432
-  user: companies_service
-  database: companies_service
+  user: transactions_users
+  database: transactions_users
   password_file: /tmp/transactions/db_password
   pool:
     min_size: 10

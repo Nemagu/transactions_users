@@ -10,47 +10,20 @@ nats:
   max_outstanding_pings: 3
 
 publishers:
-  project:
-    stream_name: projects_service
-    main_subject_name: project
+  user:
+    stream_name: transactions_users
+    main_subject_name: user
     creation_subject_name: created
     update_subject_name: updated
-    deletion_subject_name: deleted
-    restoration_subject_name: restored
-  section:
-    stream_name: projects_service
-    main_subject_name: section
-    creation_subject_name: created
-    update_subject_name: updated
-    deletion_subject_name: deleted
-    restoration_subject_name: restored
-  discipline:
-    stream_name: projects_service
-    main_subject_name: discipline
-    creation_subject_name: created
-    update_subject_name: updated
-    deletion_subject_name: deleted
-    restoration_subject_name: restored
-  stage:
-    stream_name: projects_service
-    main_subject_name: stage
-    creation_subject_name: created
-    update_subject_name: updated
-    deletion_subject_name: deleted
-    restoration_subject_name: restored
-  part:
-    stream_name: projects_service
-    main_subject_name: part
-    creation_subject_name: created
-    update_subject_name: updated
+    frozen_subject_name: frozen
     deletion_subject_name: deleted
     restoration_subject_name: restored
 
 db:
   host: localhost
   port: 5432
-  user: companies_service
-  database: companies_service
+  user: transactions_users
+  database: transactions_users
   password_file: /tmp/transactions/db_password
   pool:
     min_size: 10
