@@ -11,6 +11,20 @@ uvicorn:
   reload: false
   loop: uvloop
 
+nats:
+  host: localhost
+  port: 4222
+  healthcheck_file: /tmp/nats_worker_healthbeat
+  loop_sleep_duration: 2
+  connect_name: transactions
+  reconnect_time_wait: 5
+  connect_timeout: 5
+  ping_interval: 120
+  max_outstanding_pings: 3
+  email:
+    stream_name: email
+    send_subject_name: send
+
 db:
   host: localhost
   port: 5432

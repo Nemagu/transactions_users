@@ -13,6 +13,7 @@ from pydantic_settings import (
 from infrastructure.config.db import PostgresPoolSettings, PostgresSettings
 from infrastructure.config.fastapi import FastAPISettings, UvicornSettings
 from infrastructure.config.nats import (
+    NatsEmailSettings,
     NatsPublisherStreamSettings,
     NatsSettings,
     UserNatsPublisherStreamSettings,
@@ -23,6 +24,7 @@ __all__ = [
     "APIWorkerSettings",
     "FastAPISettings",
     "MessageBrokerPublisherSettings",
+    "NatsEmailSettings",
     "NatsPublisherStreamSettings",
     "NatsSettings",
     "PostgresPoolSettings",
@@ -66,9 +68,9 @@ class APIWorkerSettings(AppBaseSettings):
 
     fastapi: FastAPISettings = Field(default_factory=FastAPISettings)
     uvicorn: UvicornSettings = Field(default_factory=UvicornSettings)
+    nats: NatsSettings = Field(default_factory=NatsSettings)
     db: PostgresSettings = Field(default_factory=PostgresSettings)
     redis: RedisSettings = Field(default_factory=RedisSettings)
-
 
 
 class MessageBrokerPublisherSettings(AppBaseSettings):
