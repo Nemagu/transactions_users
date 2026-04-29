@@ -21,7 +21,7 @@ def handle_db_errors(func):
         except Error as e:
             raise AppInternalError(
                 msg=str(e), action="взаимодействие с базой данных", wrap_error=e
-            )
+            ) from e
 
     return wrapper
 
@@ -34,7 +34,7 @@ def handle_domain_errors(func):
         except DomainError as e:
             raise AppInternalError(
                 msg=str(e), action=e.struct_name, data=e.data, wrap_error=e
-            )
+            ) from e
 
     return wrapper
 

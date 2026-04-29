@@ -15,6 +15,6 @@ def handle_redis_errors(func):
                 msg=str(err),
                 action="взаимодействие с redis",
                 wrap_error=err,
-            )
+            ) from err
 
     return wrapper

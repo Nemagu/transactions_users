@@ -31,4 +31,4 @@ class RedisKeyValueStore(KeyValueStore):
                 action="чтение числового значения из redis",
                 data={"key": key, "value": value},
                 wrap_error=err,
-            )
+            ) from err

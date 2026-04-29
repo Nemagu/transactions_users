@@ -31,7 +31,7 @@ class PostgresConnectionManager:
                 msg=f"ошибка при инициализации пулла соединений: {err}",
                 action="инициализация пула соединений postgres",
                 wrap_error=err,
-            )
+            ) from err
 
     @asynccontextmanager
     async def connection(self):
@@ -53,4 +53,4 @@ class PostgresConnectionManager:
                 msg=f"ошибка при закрытии пулла соединений: {err}",
                 action="попытка закрытия пула подключений postgres",
                 wrap_error=err,
-            )
+            ) from err

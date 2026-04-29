@@ -81,7 +81,7 @@ class PostgresUnitOfWork(UnitOfWork):
                 msg=f"ошибка при коммите: {err}",
                 action="коммит в базу данных",
                 wrap_error=err,
-            )
+            ) from err
 
     async def _rollback(self) -> None:
         self._ensure_active()
@@ -93,7 +93,7 @@ class PostgresUnitOfWork(UnitOfWork):
                 msg=f"ошибка при роллбэке: {err}",
                 action="откат изменений транзакции",
                 wrap_error=err,
-            )
+            ) from err
 
     async def _close(self) -> None:
         if not self._closed:
