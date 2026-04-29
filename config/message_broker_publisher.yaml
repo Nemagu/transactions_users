@@ -11,7 +11,7 @@ nats:
 
 publishers:
   user:
-    stream_name: transactions_users
+    stream_name: users
     main_subject_name: user
     creation_subject_name: created
     update_subject_name: updated

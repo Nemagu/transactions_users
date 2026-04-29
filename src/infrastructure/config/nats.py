@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 class BaseNatsPublisherStreamSettings(BaseModel):
     """Базовая конфигурация исходящих subject-ов."""
 
-    stream_name: str = "transactions_users"
+    stream_name: str = "users"
     main_subject_name: str = ""
     creation_subject_name: str = "created"
     update_subject_name: str = "updated"
