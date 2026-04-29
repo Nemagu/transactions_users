@@ -25,6 +25,7 @@ from infrastructure.config.nats import (
     ProjectSectionPublisherStreamSettings,
     ProjectStagePublisherStreamSettings,
 )
+from infrastructure.config.redis import RedisSettings
 
 __all__ = [
     "APIWorkerSettings",
@@ -43,6 +44,7 @@ __all__ = [
     "ProjectPartPublisherStreamSettings",
     "ProjectSectionPublisherStreamSettings",
     "ProjectStagePublisherStreamSettings",
+    "RedisSettings",
     "UvicornSettings",
 ]
 
@@ -81,6 +83,7 @@ class APIWorkerSettings(AppBaseSettings):
     fastapi: FastAPISettings = Field(default_factory=FastAPISettings)
     uvicorn: UvicornSettings = Field(default_factory=UvicornSettings)
     db: PostgresSettings = Field(default_factory=PostgresSettings)
+    redis: RedisSettings = Field(default_factory=RedisSettings)
 
 
 class MessageBrokerConsumerSettings(AppBaseSettings):
