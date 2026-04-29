@@ -1,3 +1,5 @@
+import asyncio
+
 from redis.asyncio import Redis
 
 from application.errors import AppInternalError
@@ -37,5 +39,5 @@ class RedisConnectionManager:
     async def close(self) -> None:
         """Закрывает подключение к Redis."""
         if self._client is not None:
-            await self._client.aclose()
+            await asyncio.wait_for(self._client.aclose(), timeout=5)
             self._client = None

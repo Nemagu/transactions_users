@@ -1,3 +1,4 @@
+import asyncio
 from types import TracebackType
 from typing import Self
 
@@ -96,5 +97,5 @@ class PostgresUnitOfWork(UnitOfWork):
 
     async def _close(self) -> None:
         if not self._closed:
-            await self._conn.close()
+            await asyncio.wait_for(self._conn.close(), timeout=5)
             self._closed = True
