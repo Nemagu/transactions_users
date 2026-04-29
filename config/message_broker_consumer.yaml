@@ -1,0 +1,41 @@
+nats:
+  host: localhost
+  port: 4222
+  healthcheck_file: /tmp/nats_worker_healthbeat
+  loop_sleep_duration: 2
+  connect_name: transactions
+  reconnect_time_wait: 5
+  connect_timeout: 5
+  ping_interval: 120
+  max_outstanding_pings: 3
+
+consumers:
+  company:
+    stream_name: companies_service
+    main_subject_name: company
+    creation_subject_name: created
+    deletion_subject_name: deleted
+    restoration_subject_name: restored
+  employee:
+    stream_name: companies_service
+    main_subject_name: employee
+    creation_subject_name: created
+    deletion_subject_name: dismissed
+    restoration_subject_name: reinstated
+  project:
+    stream_name: time_tracker
+    main_subject_name: project
+    creation_subject_name: created
+
+db:
+  host: localhost
+  port: 5432
+  user: companies_service
+  database: companies_service
+  password_file: /tmp/transactions/db_password
+  pool:
+    min_size: 10
+    max_size: 20
+    max_inactive_connection_lifetime: 300
+    max_connection_lifetime: 3600
+    timeout: 20

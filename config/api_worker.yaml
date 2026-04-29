@@ -1,0 +1,25 @@
+fastapi:
+  user_id_header_name: x-user-id
+  request_id_header_name: x-request-id
+  process_time_header_name: x-process-time
+  process_time_ms_header_name: x-process-time-ms
+
+uvicorn:
+  host: 0.0.0.0
+  port: 8000
+  workers: 1
+  reload: false
+  loop: uvloop
+
+db:
+  host: localhost
+  port: 5432
+  user: companies_service
+  database: companies_service
+  password_file: /tmp/transactions/db_password
+  pool:
+    min_size: 10
+    max_size: 20
+    max_inactive_connection_lifetime: 300
+    max_connection_lifetime: 3600
+    timeout: 20
