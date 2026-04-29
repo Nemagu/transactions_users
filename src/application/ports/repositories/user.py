@@ -46,7 +46,7 @@ class UserEvent(StrEnum):
 class UserVersionDTO:
     user: User
     event: UserEvent
-    editor_id: UserID
+    editor_id: UserID | None
     created_at: datetime
 
 
