@@ -4,12 +4,12 @@ from application.errors import AppInternalError
 from application.ports.email import EmailSender
 from domain.user import Email
 from infrastructure.config.nats import NatsEmailSettings
-from infrastructure.email.payload import EmailSendPayload
+from infrastructure.masage_broker.nats.payload import EmailSendPayload
 
 
 class NatsEmailSender(EmailSender):
-    def __init__(self, nc: Client, settings: NatsEmailSettings) -> None:
-        self._nc = nc
+    def __init__(self, nats_client: Client, settings: NatsEmailSettings) -> None:
+        self._nc = nats_client
         self._settings = settings
 
     async def send(self, recipients: list[Email], body: str) -> None:

@@ -4,7 +4,6 @@ from redis.asyncio import Redis
 
 from application.errors import AppInternalError
 from infrastructure.config import RedisSettings
-from infrastructure.key_value.redis.store import RedisKeyValueStore
 
 from .errors import handle_redis_errors
 
@@ -26,14 +25,14 @@ class RedisConnectionManager:
         )
         await self._client.ping()  # pyright: ignore[reportGeneralTypeIssues]
 
-    def key_value_store(self) -> RedisKeyValueStore:
+    def client(self) -> Redis:
         """Возвращает адаптер key-value хранилища."""
         if self._client is None:
             raise AppInternalError(
                 msg="RedisConnectionManager не инициализирован",
                 action="получение redis key-value адаптера",
             )
-        return RedisKeyValueStore(self._client)
+        return self._client
 
     @handle_redis_errors
     async def close(self) -> None:

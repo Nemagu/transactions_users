@@ -51,7 +51,7 @@ class PublicAggregateTables(PrivateAggregateTables):
 
 
 class BasePostgresRepository(ABC):
-    _transactions_users_tables = "transactions_users_tables"
+    _users_tables = "users_tables"
     _users_passwords_table = "users_passwords"
     _users_tables = PublicAggregateTables("users", "users_versions", "users_outbox")
 
@@ -119,7 +119,7 @@ class BasePostgresRepository(ABC):
             FROM {}
             WHERE name = %s
             """
-        ).format(Identifier(self._transactions_users_tables))
+        ).format(Identifier(self._users_tables))
         row = await self._fetchone(query, (table_name,))
         if row is None:
             raise AppInternalError(

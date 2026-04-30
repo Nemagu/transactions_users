@@ -11,6 +11,7 @@ dependencies = [
   "psycopg[binary,pool]>=3.3.3",
   "pydantic>=2.13.3",
   "pydantic-settings[yaml]>=2.14.0",
+  "pyjwt>=2.12.1",
   "redis[hiredis]>=7.4.0",
   "uvicorn>=0.46.0",
   "uvloop>=0.22.1",
@@ -38,7 +39,6 @@ ignore = ["RUF001", "RUF002"]
 include = ["src"]
 extraPaths = ["./src"]
 typeCheckingMode = "standard"
-diagnosticMode = "workspace"
 exclude = [
   "**/__pycache__",
   "**/.venv",

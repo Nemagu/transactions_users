@@ -27,3 +27,8 @@ class UserPayload(BaseModel):
             editor_id=str(model.editor_id) if model.editor_id is not None else None,
             created_at=model.created_at.isoformat(),
         )
+
+
+class EmailSendPayload(BaseModel):
+    recipients: list[str]
+    body: str

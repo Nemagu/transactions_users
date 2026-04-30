@@ -1,3 +1,6 @@
+logging:
+  level: info
+
 nats:
   host: localhost
   port: 4222
@@ -8,12 +11,15 @@ nats:
   connect_timeout: 5
   ping_interval: 120
   max_outstanding_pings: 3
+  email:
+    stream_name: email
+    send_subject_name: send
 
 db:
   host: localhost
   port: 5432
-  user: transactions_users
-  database: transactions_users
+  user: users
+  database: users
   password_file: /tmp/transactions/db_password
   pool:
     min_size: 10

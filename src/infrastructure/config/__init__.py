@@ -12,6 +12,8 @@ from pydantic_settings import (
 
 from infrastructure.config.db import PostgresPoolSettings, PostgresSettings
 from infrastructure.config.fastapi import FastAPISettings, UvicornSettings
+from infrastructure.config.jwt import JWTSettings
+from infrastructure.config.logging import LoggingSettings, LogLevel
 from infrastructure.config.nats import (
     NatsEmailSettings,
     NatsPublisherStreamSettings,
@@ -23,6 +25,9 @@ from infrastructure.config.redis import RedisSettings
 __all__ = [
     "APIWorkerSettings",
     "FastAPISettings",
+    "JWTSettings",
+    "LogLevel",
+    "LoggingSettings",
     "MessageBrokerPublisherSettings",
     "NatsEmailSettings",
     "NatsPublisherStreamSettings",
@@ -37,6 +42,8 @@ __all__ = [
 
 class AppBaseSettings(BaseSettings):
     """Компонент `AppBaseSettings`."""
+
+    logging: LoggingSettings = Field(default_factory=LoggingSettings)
 
     model_config = SettingsConfigDict(
         yaml_file=getenv("CONFIG_FILE"),
@@ -69,8 +76,10 @@ class APIWorkerSettings(AppBaseSettings):
     fastapi: FastAPISettings = Field(default_factory=FastAPISettings)
     uvicorn: UvicornSettings = Field(default_factory=UvicornSettings)
     nats: NatsSettings = Field(default_factory=NatsSettings)
+    email: NatsEmailSettings = Field(default_factory=NatsEmailSettings)
     db: PostgresSettings = Field(default_factory=PostgresSettings)
     redis: RedisSettings = Field(default_factory=RedisSettings)
+    jwt: JWTSettings = Field(default_factory=JWTSettings)
 
 
 class MessageBrokerPublisherSettings(AppBaseSettings):

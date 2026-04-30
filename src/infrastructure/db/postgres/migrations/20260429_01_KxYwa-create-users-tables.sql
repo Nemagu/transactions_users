@@ -3,7 +3,7 @@
 
 BEGIN;
 
-CREATE TABLE IF NOT EXISTS transactions_users_tables (
+CREATE TABLE IF NOT EXISTS users_tables (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
     name VARCHAR(100) NOT NULL UNIQUE
 );
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS users_outbox (
     UNIQUE (user_id, version)
 );
 
-INSERT INTO transactions_users_tables (name)
+INSERT INTO users_tables (name)
 VALUES ('users'),
 ('users_versions'),
 ('users_outbox');

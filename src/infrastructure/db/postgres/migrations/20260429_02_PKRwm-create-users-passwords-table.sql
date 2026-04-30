@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS users_passwords (
     user_id UUID NOT NULL REFERENCES users ON DELETE CASCADE UNIQUE
 );
 
-INSERT INTO transactions_users_tables (name)
+INSERT INTO users_tables (name)
 VALUES ('users_passwords');
 
 COMMIT;
