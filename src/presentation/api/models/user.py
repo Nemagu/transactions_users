@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Self
 from uuid import UUID
 
@@ -12,7 +13,7 @@ from application.command.public.user import (
     UserCreatingCommand,
     UserEmailChangingCommand,
 )
-from application.dto.user import UserSimpleDTO
+from application.dto.user import UserSimpleDTO, UserVersionSimpleDTO
 
 
 class UserSimpleResponse(BaseModel):
@@ -30,6 +31,30 @@ class UserSimpleResponse(BaseModel):
             status=dto.status,
             state=dto.state,
             version=dto.version,
+        )
+
+
+class UserVersionSimpleResponse(BaseModel):
+    user_id: UUID
+    email: str
+    status: str
+    state: str
+    version: int
+    event: str
+    editor_id: UUID | None
+    created_at: datetime
+
+    @classmethod
+    def from_dto(cls, dto: UserVersionSimpleDTO) -> Self:
+        return cls(
+            user_id=dto.user_id,
+            email=dto.email,
+            status=dto.status,
+            state=dto.state,
+            version=dto.version,
+            event=dto.event,
+            editor_id=dto.editor_id,
+            created_at=dto.created_at,
         )
 
 

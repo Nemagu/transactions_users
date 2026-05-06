@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 
 from application.command.public.user import (
     AuthCodeSendingUseCase,
@@ -17,6 +17,23 @@ from application.command.public.user import (
     UserFreezingCommand,
     UserFreezingUseCase,
 )
+from application.dto.paginators import LimitOffsetPaginator
+from application.queries.public.user.list_last_versions import (
+    UserLastVersionsQuery,
+    UserLastVersionsUseCase,
+)
+from application.queries.public.user.list_versions import (
+    UserVersionsQuery,
+    UserVersionsUseCase,
+)
+from application.queries.public.user.retrieve_last_version import (
+    UserLastVersionQuery,
+    UserLastVersionUseCase,
+)
+from application.queries.public.user.retrieve_version import (
+    UserVersionQuery,
+    UserVersionUseCase,
+)
 from infrastructure.db.postgres import PostgresUnitOfWork
 from infrastructure.email import SimpleEmailBodyBuilder
 from infrastructure.key_value.redis import RedisKeyValueStore
@@ -32,6 +49,7 @@ from presentation.api.dependencies import (
     redis_store,
     user_id_extractor,
 )
+from presentation.api.models.paginator_result import LimitOffsetPaginatorResult
 from presentation.api.models.user import (
     AuthCodeRequest,
     AuthCodeSendRequest,
@@ -41,6 +59,7 @@ from presentation.api.models.user import (
     UserConfirmEmailRequest,
     UserCreateRequest,
     UserSimpleResponse,
+    UserVersionSimpleResponse,
 )
 
 user_router = APIRouter(prefix="/users", tags=["User"])
@@ -167,3 +186,84 @@ async def appoint_user(
         UserAppointingUserCommand(initiator_id=initiator_id, user_id=user_id)
     )
     return UserSimpleResponse.from_dto(dto)
+
+
+@user_router.get("")
+async def get_users(
+    limit: int = 20,
+    offset: int = 0,
+    user_id: list[UUID] | None = Query(default=None),
+    status: list[str] | None = Query(default=None),
+    state: list[str] | None = Query(default=None),
+    initiator_id: UUID = Depends(user_id_extractor),
+    uow: PostgresUnitOfWork = Depends(db_unit_of_work),
+) -> LimitOffsetPaginatorResult[UserSimpleResponse]:
+    paginator = LimitOffsetPaginator(limit=limit, offset=offset)
+    query = UserLastVersionsQuery(
+        initiator_id=initiator_id,
+        paginator=paginator,
+        user_ids=user_id,
+        statuses=status,
+        states=state,
+    )
+    uc = UserLastVersionsUseCase(uow)
+    result, count = await uc.execute(query)
+    return LimitOffsetPaginatorResult(
+        count=count,
+        results=[UserSimpleResponse.from_dto(dto) for dto in result],
+    )
+
+
+@user_router.get("/{user_id}")
+async def get_user(
+    user_id: UUID,
+    initiator_id: UUID = Depends(user_id_extractor),
+    uow: PostgresUnitOfWork = Depends(db_unit_of_work),
+) -> UserSimpleResponse:
+    query = UserLastVersionQuery(initiator_id=initiator_id, user_id=user_id)
+    uc = UserLastVersionUseCase(uow)
+    dto = await uc.execute(query)
+    return UserSimpleResponse.from_dto(dto)
+
+
+@user_router.get("/{user_id}/versions")
+async def get_user_versions(
+    user_id: UUID,
+    limit: int = 20,
+    offset: int = 0,
+    status: list[str] | None = Query(default=None),
+    state: list[str] | None = Query(default=None),
+    from_version: int | None = None,
+    to_version: int | None = None,
+    initiator_id: UUID = Depends(user_id_extractor),
+    uow: PostgresUnitOfWork = Depends(db_unit_of_work),
+) -> LimitOffsetPaginatorResult[UserVersionSimpleResponse]:
+    paginator = LimitOffsetPaginator(limit=limit, offset=offset)
+    query = UserVersionsQuery(
+        initiator_id=initiator_id,
+        user_id=user_id,
+        paginator=paginator,
+        statuses=status,
+        states=state,
+        from_version=from_version,
+        to_version=to_version,
+    )
+    uc = UserVersionsUseCase(uow)
+    result, count = await uc.execute(query)
+    return LimitOffsetPaginatorResult(
+        count=count,
+        results=[UserVersionSimpleResponse.from_dto(dto) for dto in result],
+    )
+
+
+@user_router.get("/{user_id}/versions/{version}")
+async def get_user_version(
+    user_id: UUID,
+    version: int,
+    initiator_id: UUID = Depends(user_id_extractor),
+    uow: PostgresUnitOfWork = Depends(db_unit_of_work),
+) -> UserVersionSimpleResponse:
+    query = UserVersionQuery(initiator_id=initiator_id, user_id=user_id, version=version)
+    uc = UserVersionUseCase(uow)
+    dto = await uc.execute(query)
+    return UserVersionSimpleResponse.from_dto(dto)
