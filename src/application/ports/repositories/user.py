@@ -4,9 +4,11 @@ from datetime import datetime
 from enum import StrEnum
 from typing import Self
 
+from application.dto.paginators import LimitOffsetPaginator
 from application.errors import AppInvalidDataError
-from domain.user import User, UserID
+from domain.user import User, UserID, UserState, UserStatus
 from domain.user import UserReadRepository as DomainUserReadRepository
+from domain.value_objects import Version
 
 
 class UserReadRepository(DomainUserReadRepository):
@@ -15,6 +17,15 @@ class UserReadRepository(DomainUserReadRepository):
 
     @abstractmethod
     async def by_id(self, user_id: UserID) -> User | None: ...
+
+    @abstractmethod
+    async def filters(
+        self,
+        paginator: LimitOffsetPaginator,
+        user_ids: list[UserID] | None = None,
+        statuses: list[UserStatus] | None = None,
+        states: list[UserState] | None = None,
+    ) -> tuple[list[User], int]: ...
 
     @abstractmethod
     async def save(self, user: User) -> None: ...
@@ -51,6 +62,22 @@ class UserVersionDTO:
 
 
 class UserVersionRepository(ABC):
+    @abstractmethod
+    async def by_id_version(
+        self, user_id: UserID, version: Version
+    ) -> UserVersionDTO | None: ...
+
+    @abstractmethod
+    async def filters(
+        self,
+        paginator: LimitOffsetPaginator,
+        user_id: UserID,
+        statuses: list[UserStatus] | None = None,
+        states: list[UserState] | None = None,
+        from_version: Version | None = None,
+        to_version: Version | None = None,
+    ) -> tuple[list[UserVersionDTO], int]: ...
+
     @abstractmethod
     async def save(
         self, user: User, event: UserEvent, editor_id: UserID | None
