@@ -15,5 +15,8 @@ def test_postgres_settings_builds_urls(tmp_path) -> None:
     settings = PostgresSettings(password_file=str(password_file))
 
     assert settings.password == "secret"
-    assert settings.url == "postgresql://users:secret@localhost:5432/users"
-    assert settings.url_with_psycopg == "postgresql+psycopg://users:secret@localhost:5432/users"
+    assert settings.url == "postgresql://atlas_users:secret@localhost:5432/atlas_users"
+    assert (
+        settings.url_with_psycopg
+        == "postgresql+psycopg://atlas_users:secret@localhost:5432/atlas_users"
+    )

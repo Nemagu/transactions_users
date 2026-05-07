@@ -1,6 +1,6 @@
-# users
+# atlas_users
 
-Сервис `users` отвечает за управление жизненным циклом пользователей: регистрация, подтверждение email, аутентификация, смена email, назначение ролей и публикация доменных событий.
+Сервис `atlas_users` отвечает за управление жизненным циклом пользователей: регистрация, подтверждение email, аутентификация, смена email, назначение ролей и публикация доменных событий.
 
 Проект построен на гексагональной архитектуре:
 - `domain` — DDD-модель и бизнес-инварианты.
@@ -92,11 +92,11 @@ cp env.example .env
 3. Подготовка файлов секретов (пример):
 
 ```bash
-mkdir -p /tmp/users
-printf 'users_password' > /tmp/users/db_password
+mkdir -p /tmp/atlas_users
+printf 'atlas_users_password' > /tmp/atlas_users/db_password
 # jwt ключи:
-# /tmp/users/jwt_private_key.pem
-# /tmp/users/jwt_public_key.pem
+# /tmp/atlas_users/jwt_private_key.pem
+# /tmp/atlas_users/jwt_public_key.pem
 ```
 
 4. Запуск API:
@@ -141,7 +141,7 @@ uv run pytest --cov=src --cov-report=term-missing
 ```
 
 Интеграционные тесты поднимают инфраструктуру автоматически через Docker Compose,
-временные файлы создаются в `/tmp/users/` со случайными именами для каждой сессии.
+временные файлы создаются в `/tmp/atlas_users/` со случайными именами для каждой сессии.
 
 ## Docker
 
@@ -151,7 +151,7 @@ uv run pytest --cov=src --cov-report=term-missing
 Сборка:
 
 ```bash
-docker build -t users-service:local .
+docker build -t atlas_users:local .
 ```
 
 Запуск контейнера требует передать рабочий `CONFIG_FILE` и секреты/ключи, доступные внутри контейнера.

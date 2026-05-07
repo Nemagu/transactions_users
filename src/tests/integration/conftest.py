@@ -18,15 +18,15 @@ from domain.user import Email, UserFactory, UserID
 from infrastructure.config import NatsSettings, PostgresSettings, RedisSettings
 from infrastructure.db.postgres.apply_migrations import apply_migrations
 
-RUNTIME_DIR = Path("/tmp/users")
-POSTGRES_USER = "users"
-POSTGRES_DB = "users"
+RUNTIME_DIR = Path("/tmp/atlas_users")
+POSTGRES_USER = "atlas_users"
+POSTGRES_DB = "atlas_users"
 
 
 class IntegrationRuntime:
     def __init__(self) -> None:
         token = str(uuid7())
-        self.project = f"users_tests_{token.replace('-', '_')}"
+        self.project = f"atlas_users_tests_{token.replace('-', '_')}"
         self.compose_file = RUNTIME_DIR / f"docker-compose-{token}.yaml"
         self.postgres_password_file = RUNTIME_DIR / f"db-password-{token}.txt"
         self.postgres_config_file = RUNTIME_DIR / f"postgres-config-{token}.yaml"

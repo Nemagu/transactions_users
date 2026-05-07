@@ -1,5 +1,5 @@
 [project]
-name = "transactions-users"
+name = "atlas-users"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"

@@ -11,7 +11,7 @@ async def test_postgres_connection_manager_query(postgres_settings) -> None:
     try:
         async with manager.connection() as conn:
             async with conn.cursor() as cursor:
-                await cursor.execute("SELECT COUNT(*) FROM users_tables")
+                await cursor.execute("SELECT COUNT(*) FROM atlas_users_tables")
                 row = await cursor.fetchone()
         assert row is not None
         assert row["count"] >= 4

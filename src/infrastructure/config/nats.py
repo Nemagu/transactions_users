@@ -90,7 +90,7 @@ class NatsSettings(BaseModel):
 
     loop_sleep_duration: int = 2
 
-    connect_name: str = "transactions"
+    connect_name: str = "atlas_users"
     reconnect_time_wait: int = 5
     connect_timeout: int = 5
     ping_interval: int = 120

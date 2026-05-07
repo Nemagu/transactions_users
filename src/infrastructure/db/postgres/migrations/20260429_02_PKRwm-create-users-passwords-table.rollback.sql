@@ -5,7 +5,7 @@ BEGIN;
 
 DROP TABLE IF EXISTS users_passwords;
 
-DELETE FROM users_tables
+DELETE FROM atlas_users_tables
 WHERE name = 'users_passwords';
 
 COMMIT;

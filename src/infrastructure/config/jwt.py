@@ -10,11 +10,11 @@ class JWTSettings(BaseModel):
     """Настройки JWT с асимметричным RS256 ключом."""
 
     algorithm: str = "RS256"
-    private_key_file: str = "/tmp/transactions/jwt_private_key.pem"
+    private_key_file: str = "/tmp/atlas_users/jwt_private_key.pem"
     public_key_file: str | None = None
 
-    issuer: str = "users"
-    audience: str = "users_api"
+    issuer: str = "atlas_users"
+    audience: str = "atlas_users_api"
     access_token_ttl_seconds: int = 900
     refresh_token_ttl_seconds: int = 2592000
     leeway_seconds: int = 0

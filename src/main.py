@@ -1,4 +1,4 @@
-"""Точка входа сервиса users."""
+"""Точка входа сервиса atlas_users."""
 
 import asyncio
 from logging import basicConfig, getLogger

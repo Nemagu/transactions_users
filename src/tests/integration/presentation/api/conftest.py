@@ -100,8 +100,8 @@ nats:
 db:
   host: 127.0.0.1
   port: {integration_runtime.postgres_port}
-  user: users
-  database: users
+  user: atlas_users
+  database: atlas_users
   password_file: {integration_runtime.postgres_password_file}
   pool:
     min_size: 1
@@ -124,8 +124,8 @@ jwt:
   algorithm: RS256
   private_key_file: {private_key}
   public_key_file: {public_key}
-  issuer: users
-  audience: users_api
+  issuer: atlas_users
+  audience: atlas_users_api
   access_token_ttl_seconds: 900
   refresh_token_ttl_seconds: 2592000
   leeway_seconds: 0

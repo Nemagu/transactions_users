@@ -19,7 +19,7 @@ nats:
   port: 4222
   healthcheck_file: /tmp/nats_worker_healthbeat
   loop_sleep_duration: 2
-  connect_name: transactions
+  connect_name: atlas_users
   reconnect_time_wait: 5
   connect_timeout: 5
   ping_interval: 120
@@ -33,9 +33,9 @@ email:
 db:
   host: localhost
   port: 5432
-  user: users
-  database: users
-  password_file: /tmp/transactions/db_password
+  user: atlas_users
+  database: atlas_users
+  password_file: /tmp/atlas_users/db_password
   pool:
     min_size: 10
     max_size: 20
@@ -56,10 +56,10 @@ redis:
 
 jwt:
   algorithm: RS256
-  private_key_file: /tmp/transactions/jwt_private_key.pem
-  public_key_file: /tmp/transactions/jwt_public_key.pem
-  issuer: users
-  audience: users_api
+  private_key_file: /tmp/atlas_users/jwt_private_key.pem
+  public_key_file: /tmp/atlas_users/jwt_public_key.pem
+  issuer: atlas_users
+  audience: atlas_users_api
   access_token_ttl_seconds: 900
   refresh_token_ttl_seconds: 2592000
   leeway_seconds: 0
