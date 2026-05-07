@@ -24,9 +24,11 @@ nats:
   connect_timeout: 5
   ping_interval: 120
   max_outstanding_pings: 3
-  email:
-    stream_name: email
-    send_subject_name: send
+
+email:
+  stream_name: email
+  main_subject_name: email
+  send_subject_name: send
 
 db:
   host: localhost

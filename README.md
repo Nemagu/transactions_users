@@ -42,7 +42,6 @@ src/
 config/
   api_worker.yaml
   message_broker_publisher.yaml
-  message_broker_consumer.yaml
 env.example
 main.py
 ```
@@ -55,7 +54,6 @@ main.py
 Примеры конфигов:
 - `config/api_worker.yaml` — API-воркер
 - `config/message_broker_publisher.yaml` — NATS publisher-воркер
-- `config/message_broker_consumer.yaml` — задел под consumer-воркер
 
 Переменные окружения (см. `env.example`):
 - `MODE` — режим запуска: `api` или `nats_publisher`
@@ -161,5 +159,4 @@ docker build -t users-service:local .
 ## Ограничения текущей версии
 
 - Реализован только режим `api` и `nats_publisher`.
-- Consumer-воркер пока не подключен в `main.py`.
 - Часть документации по операционным сценариям (деплой, мониторинг) еще требует расширения.

@@ -7,12 +7,13 @@ class NatsEmailSettings(BaseModel):
     """Настройки отправки email-сообщений через NATS."""
 
     stream_name: str = "email"
+    main_subject_name: str = "email"
     send_subject_name: str = "send"
 
     @property
     def send_subject(self) -> str:
         return (
-            f"{self.stream_name}.{self.send_subject_name}"
+            f"{self.stream_name}.{self.main_subject_name}.{self.send_subject_name}"
         )
 
     @property
@@ -94,8 +95,6 @@ class NatsSettings(BaseModel):
     connect_timeout: int = 5
     ping_interval: int = 120
     max_outstanding_pings: int = 3
-
-    email: NatsEmailSettings = Field(default_factory=NatsEmailSettings)
 
     @property
     def url(self) -> str:

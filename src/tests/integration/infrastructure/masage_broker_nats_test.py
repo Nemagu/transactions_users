@@ -13,8 +13,9 @@ from infrastructure.masage_broker.nats.publisher import EventNatsPublisher
 
 @pytest.mark.asyncio
 async def test_nats_email_sender_publishes_payload(nats_client) -> None:
-    sender = NatsEmailSender(nats_client=nats_client, settings=NatsEmailSettings())
-    sub = await nats_client.subscribe("email.send")
+    settings = NatsEmailSettings()
+    sender = NatsEmailSender(nats_client=nats_client, settings=settings)
+    sub = await nats_client.subscribe(settings.send_subject)
     message = EmailMessage(
         recipient=Email("a@b.c"),
         subject="hi",

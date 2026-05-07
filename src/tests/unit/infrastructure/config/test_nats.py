@@ -6,10 +6,12 @@ from infrastructure.config.nats import (
 
 
 def test_nats_email_subjects() -> None:
-    settings = NatsEmailSettings(stream_name="email", send_subject_name="send")
+    settings = NatsEmailSettings(
+        stream_name="email", main_subject_name="email", send_subject_name="send"
+    )
 
-    assert settings.send_subject == "email.send"
-    assert settings.subjects == ["email.send"]
+    assert settings.send_subject == "email.email.send"
+    assert settings.subjects == ["email.email.send"]
 
 
 def test_nats_publisher_user_subjects() -> None:
