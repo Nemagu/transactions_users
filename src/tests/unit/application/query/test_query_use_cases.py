@@ -11,12 +11,18 @@ from application.queries.public.user.list_last_versions import (
     UserLastVersionsQuery,
     UserLastVersionsUseCase,
 )
-from application.queries.public.user.list_versions import UserVersionsQuery, UserVersionsUseCase
+from application.queries.public.user.list_versions import (
+    UserVersionsQuery,
+    UserVersionsUseCase,
+)
 from application.queries.public.user.retrieve_last_version import (
     UserLastVersionQuery,
     UserLastVersionUseCase,
 )
-from application.queries.public.user.retrieve_version import UserVersionQuery, UserVersionUseCase
+from application.queries.public.user.retrieve_version import (
+    UserVersionQuery,
+    UserVersionUseCase,
+)
 from domain.errors import EntityPolicyError
 from domain.user.value_objects import UserStatus
 
@@ -260,7 +266,7 @@ async def test_versions_admin_access_returns_results(user_factory, user_version_
         from_version=None,
         to_version=None,
     )
-    result, count = await UserVersionsUseCase(uow).execute(query)
+    _result, count = await UserVersionsUseCase(uow).execute(query)
     assert count == 1
 
 
