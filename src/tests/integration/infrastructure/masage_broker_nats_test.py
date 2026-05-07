@@ -3,6 +3,7 @@ from uuid import uuid7
 
 import pytest
 
+from application.ports.email import EmailMessage
 from application.ports.repositories import UserEvent, UserVersionDTO
 from domain.user import Email, UserFactory, UserID
 from infrastructure.config.nats import NatsEmailSettings, NatsPublisherStreamSettings
@@ -14,12 +15,20 @@ from infrastructure.masage_broker.nats.publisher import EventNatsPublisher
 async def test_nats_email_sender_publishes_payload(nats_client) -> None:
     sender = NatsEmailSender(nats_client=nats_client, settings=NatsEmailSettings())
     sub = await nats_client.subscribe("email.send")
+    message = EmailMessage(
+        recipient=Email("a@b.c"),
+        subject="hi",
+        html_body="<p>hello</p>",
+        text_body="hello",
+    )
 
-    await sender.send([Email("a@b.c")], "hello")
+    await sender.send(message)
     msg = await sub.next_msg(timeout=2)
 
-    assert b'"recipients":["a@b.c"]' in msg.data
-    assert b'"body":"hello"' in msg.data
+    assert b'"recipient":"a@b.c"' in msg.data
+    assert b'"subject":"hi"' in msg.data
+    assert b'"html_body":"<p>hello</p>"' in msg.data
+    assert b'"text_body":"hello"' in msg.data
 
 
 @pytest.mark.asyncio

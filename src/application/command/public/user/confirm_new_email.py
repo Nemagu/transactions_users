@@ -4,7 +4,7 @@ from uuid import UUID
 
 from application.command.base import BaseUseCase
 from application.errors import AppInvalidDataError
-from application.ports.email import EmailBodyBuilder, EmailSender
+from application.ports.email import EmailMessageBuilder, EmailSender
 from application.ports.key_value_store import KeyValueStore
 from application.ports.randomizer import Randomizer
 from application.ports.unit_of_work import UnitOfWork
@@ -24,7 +24,7 @@ class NewEmailConfirmingUseCase(BaseUseCase):
         key_value_store: KeyValueStore,
         randomizer: Randomizer,
         email_sender: EmailSender,
-        email_builder: EmailBodyBuilder,
+        email_builder: EmailMessageBuilder,
     ) -> None:
         super().__init__(uow)
         self._kv_store = key_value_store
@@ -59,7 +59,11 @@ class NewEmailConfirmingUseCase(BaseUseCase):
             new_email_code,
             timedelta(minutes=5),
         )
-        old_email_body = await self._email_builder.confirm_new_email(old_email_code)
-        new_email_body = await self._email_builder.confirm_new_email(new_email_code)
-        await self._email_sender.send([old_email], old_email_body)
-        await self._email_sender.send([new_email], new_email_body)
+        old_email_message = await self._email_builder.confirm_new_email(
+            old_email, old_email_code
+        )
+        new_email_message = await self._email_builder.confirm_new_email(
+            new_email, new_email_code
+        )
+        await self._email_sender.send(old_email_message)
+        await self._email_sender.send(new_email_message)

@@ -30,5 +30,7 @@ class UserPayload(BaseModel):
 
 
 class EmailSendPayload(BaseModel):
-    recipients: list[str]
-    body: str
+    recipient: str
+    subject: str
+    html_body: str
+    text_body: str

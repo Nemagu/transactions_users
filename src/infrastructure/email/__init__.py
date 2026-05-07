@@ -1,3 +1,3 @@
-from infrastructure.email.body_builder import SimpleEmailBodyBuilder
+from infrastructure.email.body_builder import SimpleEmailMessageBuilder
 
-__all__ = ["SimpleEmailBodyBuilder"]
+__all__ = ["SimpleEmailMessageBuilder"]

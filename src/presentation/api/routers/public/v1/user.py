@@ -35,7 +35,7 @@ from application.queries.public.user.retrieve_version import (
     UserVersionUseCase,
 )
 from infrastructure.db.postgres import PostgresUnitOfWork
-from infrastructure.email import SimpleEmailBodyBuilder
+from infrastructure.email import SimpleEmailMessageBuilder
 from infrastructure.key_value.redis import RedisKeyValueStore
 from infrastructure.masage_broker.nats import NatsEmailSender
 from infrastructure.password_manager import Argon2PasswordManager
@@ -71,7 +71,7 @@ async def confirm_email(
     uow: PostgresUnitOfWork = Depends(db_unit_of_work),
     key_value_store: RedisKeyValueStore = Depends(redis_store),
     sender: NatsEmailSender = Depends(email_sender),
-    builder: SimpleEmailBodyBuilder = Depends(email_builder),
+    builder: SimpleEmailMessageBuilder = Depends(email_builder),
     rng: SecureRandomizer = Depends(randomizer),
 ) -> None:
     uc = UserConfirmingEmailUseCase(uow, key_value_store, sender, builder, rng)
@@ -97,7 +97,7 @@ async def send_auth_code(
     key_value_store: RedisKeyValueStore = Depends(redis_store),
     rng: SecureRandomizer = Depends(randomizer),
     sender: NatsEmailSender = Depends(email_sender),
-    builder: SimpleEmailBodyBuilder = Depends(email_builder),
+    builder: SimpleEmailMessageBuilder = Depends(email_builder),
 ) -> None:
     uc = AuthCodeSendingUseCase(uow, key_value_store, rng, sender, builder)
     await uc.execute(request.to_command())
@@ -133,7 +133,7 @@ async def confirm_new_email(
     key_value_store: RedisKeyValueStore = Depends(redis_store),
     rng: SecureRandomizer = Depends(randomizer),
     sender: NatsEmailSender = Depends(email_sender),
-    builder: SimpleEmailBodyBuilder = Depends(email_builder),
+    builder: SimpleEmailMessageBuilder = Depends(email_builder),
 ) -> None:
     uc = NewEmailConfirmingUseCase(uow, key_value_store, rng, sender, builder)
     await uc.execute(request.to_command(initiator_id))

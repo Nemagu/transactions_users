@@ -3,7 +3,7 @@ from datetime import timedelta
 
 from application.command.base import BaseUseCase
 from application.errors import AppInvalidDataError
-from application.ports.email import EmailBodyBuilder, EmailSender
+from application.ports.email import EmailMessageBuilder, EmailSender
 from application.ports.key_value_store import KeyValueStore
 from application.ports.randomizer import Randomizer
 from application.ports.unit_of_work import UnitOfWork
@@ -21,7 +21,7 @@ class UserConfirmingEmailUseCase(BaseUseCase):
         uow: UnitOfWork,
         key_value_store: KeyValueStore,
         email_sender: EmailSender,
-        email_builder: EmailBodyBuilder,
+        email_builder: EmailMessageBuilder,
         randomizer: Randomizer,
     ) -> None:
         super().__init__(uow)
@@ -34,7 +34,7 @@ class UserConfirmingEmailUseCase(BaseUseCase):
         action = "подтверждение электронной почты для регистрации"
         email = Email(command.email)
         code = await self._randomizer.number(8)
-        body = await self._email_builder.confirm_email(code)
+        message = await self._email_builder.confirm_email(email, code)
         async with self._uow as uow:
             user = await uow.user_repositories.read.by_email(email)
             if user is not None:
@@ -46,4 +46,4 @@ class UserConfirmingEmailUseCase(BaseUseCase):
         await self._kv_store.set(
             f"users:confirm_email:{email.email}", code, timedelta(minutes=5)
         )
-        await self._email_sender.send([email], body)
+        await self._email_sender.send(message)

@@ -5,7 +5,7 @@ from fastapi import FastAPI
 
 from infrastructure.config import APIWorkerSettings
 from infrastructure.db.postgres import PostgresConnectionManager
-from infrastructure.email import SimpleEmailBodyBuilder
+from infrastructure.email import SimpleEmailMessageBuilder
 from infrastructure.jwt.pyjwt import PyJWTManager
 from infrastructure.key_value.redis import RedisConnectionManager
 from infrastructure.masage_broker.nats import NatsConnectionManager
@@ -23,7 +23,7 @@ class APILifespan:
         nats_connection_manager = NatsConnectionManager(self._settings.nats)
         redis_connection_manager = RedisConnectionManager(self._settings.redis)
         password_manager = Argon2PasswordManager()
-        email_builder = SimpleEmailBodyBuilder()
+        email_builder = SimpleEmailMessageBuilder()
         randomizer = SecureRandomizer()
         jwt_manager = PyJWTManager(self._settings.jwt)
         await pg_connection_manager.init()

@@ -1,8 +1,7 @@
 from nats.aio.client import Client
 
 from application.errors import AppInternalError
-from application.ports.email import EmailSender
-from domain.user import Email
+from application.ports.email import EmailMessage, EmailSender
 from infrastructure.config.nats import NatsEmailSettings
 from infrastructure.masage_broker.nats.payload import EmailSendPayload
 
@@ -12,11 +11,13 @@ class NatsEmailSender(EmailSender):
         self._nc = nats_client
         self._settings = settings
 
-    async def send(self, recipients: list[Email], body: str) -> None:
-        """Отправляет тело письма во внешний email-сервис через NATS."""
+    async def send(self, message: EmailMessage) -> None:
+        """Сериализует письмо в payload и публикует в NATS."""
         payload = EmailSendPayload(
-            recipients=[email.email for email in recipients],
-            body=body,
+            recipient=message.recipient.email,
+            subject=message.subject,
+            html_body=message.html_body,
+            text_body=message.text_body,
         )
         data = payload.model_dump_json().encode("utf-8")
         try:

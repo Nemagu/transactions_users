@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from datetime import timedelta
 
 from application.command.base import BaseUseCase
-from application.ports.email import EmailBodyBuilder, EmailSender
+from application.ports.email import EmailMessageBuilder, EmailSender
 from application.ports.key_value_store import KeyValueStore
 from application.ports.randomizer import Randomizer
 from application.ports.unit_of_work import UnitOfWork
@@ -21,7 +21,7 @@ class AuthCodeSendingUseCase(BaseUseCase):
         key_value_store: KeyValueStore,
         randomizer: Randomizer,
         email_sender: EmailSender,
-        email_builder: EmailBodyBuilder,
+        email_builder: EmailMessageBuilder,
     ) -> None:
         super().__init__(uow)
         self._kv_store = key_value_store
@@ -39,5 +39,5 @@ class AuthCodeSendingUseCase(BaseUseCase):
         await self._kv_store.set(
             f"users:code_auth:{email.email}", code, timedelta(minutes=5)
         )
-        body = await self._email_builder.auth_code(code)
-        await self._email_sender.send([email], body)
+        message = await self._email_builder.auth_code(email, code)
+        await self._email_sender.send(message)

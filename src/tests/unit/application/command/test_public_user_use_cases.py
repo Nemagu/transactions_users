@@ -26,8 +26,19 @@ from application.command.public.user import (
     UserFreezingUseCase,
 )
 from application.errors import AppInvalidDataError, AppNotFoundError
+from application.ports.email import EmailMessage
 from application.ports.repositories import UserEvent
+from domain.user import Email
 from domain.user.value_objects import UserStatus
+
+
+def _make_message(recipient: Email, code: int) -> EmailMessage:
+    return EmailMessage(
+        recipient=recipient,
+        subject="subject",
+        html_body=f"<p>{code}</p>",
+        text_body=f"code: {code}",
+    )
 
 
 class _FakeUow:
@@ -147,11 +158,13 @@ async def test_auth_code_send_and_auth(user_factory):
     async def number(_: int):
         return 87654321
 
-    async def auth_code(code: int):
-        return f"code:{code}"
+    async def auth_code(recipient: Email, code: int):
+        return _make_message(recipient, code)
 
-    async def send(emails, body):
-        return None
+    sent: list[EmailMessage] = []
+
+    async def send(message: EmailMessage):
+        sent.append(message)
 
     rng.number = number
     builder = SimpleNamespace(auth_code=auth_code)
@@ -177,11 +190,11 @@ async def test_confirm_email_fails_if_exists(user_factory):
     async def set_value(*args):
         return None
 
-    async def send(*args):
+    async def send(message: EmailMessage):
         return None
 
-    async def confirm_email(code: int):
-        return f"{code}"
+    async def confirm_email(recipient: Email, code: int):
+        return _make_message(recipient, code)
 
     uc = UserConfirmingEmailUseCase(
         uow,
@@ -260,11 +273,13 @@ async def test_confirm_new_email_and_change_email(user_factory):
     async def number(_: int):
         return 22222222
 
-    async def send(emails, body):
-        return None
+    sent: list[EmailMessage] = []
 
-    async def confirm_new_email(code: int):
-        return f"code:{code}"
+    async def send(message: EmailMessage):
+        sent.append(message)
+
+    async def confirm_new_email(recipient: Email, code: int):
+        return _make_message(recipient, code)
 
     kv = SimpleNamespace(set=set_value, get_int=get_int)
     rng = SimpleNamespace(number=number)
